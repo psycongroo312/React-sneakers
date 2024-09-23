@@ -1,52 +1,56 @@
+import React from "react";
 import Card from "./components/Card";
 import Header from "./components/Header";
 import Drawer from "./components/Drawer";
 
-const array = [
-  {
-    title: 'Мужские Кроссовки Nike Blazer Mid Suede', 
-    price: 12000,
-    imageUrl: '/img/sneaker1.jpg'
-  },
-  {
-    title: 'Мужские Кроссовки Nike Air Max 270', 
-    price: 12999,
-    imageUrl: '/img/sneaker2.jpg'
-  },
-  {
-    title: 'Мужские Кроссовки Nike Blazer Mid Suede', 
-    price: 8499,
-    imageUrl: '/img/sneaker3.jpg'
-  },
-  {
-    title: 'Кроссовки Puma X Aka Boku Future Rider', 
-    price: 8999,
-    imageUrl: '/img/sneaker4.jpg'
-  },
-]
-
 function App() {
+  const [items, setItems] = React.useState([]);
+  const [cartItems, setCartItems] = React.useState([]);
+  const [searchValue, setSearchValue ] = React.useState('');
+  const [cartOpened, setCartOpened] = React.useState(false);
+
+ React.useEffect(() => {
+  fetch('https://66d7100a006bfbe2e64faa98.mockapi.io/items')
+  .then((res) => {
+    return res.json();
+  })
+  .then((json) => {
+    setItems(json);
+  });
+ },[]); 
+
+ const onAddToCart = (obj) => {
+  setCartItems([...cartItems, obj]);
+ };
+
+ const onChangeSearchInput = (event) => {
+    setSearchValue(event.target.value)
+ };
+
   return (
     <div className="wrapper clear">
-      <Drawer/>
-      <Header/>
+      {cartOpened && <Drawer items={cartItems} onClose={() => setCartOpened(false)}/>}
+      <Header onClickCart={() => setCartOpened(true)}/>
       <div className="content p-40">
-        <div className="d-flex align-center justify-between mb-40">
-          <h1>Все кроссовки</h1>
+        <div className="d-flex align-center justify-between mb-40"> 
+          <h1>{searchValue ? `Поиск по запросу: "${searchValue}"` : 'Все кроссовки'}</h1>
           <div className="search-block d-flex">
             <img src="/img/search.svg" alt="search" />
-            <input type="text" placeholder="Поиск..." />
+            <input onChange={onChangeSearchInput} type="text" placeholder="Поиск..." />
           </div>
         </div>
 
-        <div className="d-flex">
-          {array.map((obj) => (
+        <div className="d-flex flex-wrap">
+          {items.map((item, index) => (
             <Card
-            title={obj.title}
-            price={obj.price}
-            imageUrl={obj.imageUrl}
+            key={index}
+            title={item.title}
+            price={item.price}
+            imageUrl={item.imageUrl}
+            onFavorite={() => console.log("Добавили в закладки")}
+            onPlus={onAddToCart}
          />
-          ))}
+          ))}   
         </div>
       </div>
     </div>

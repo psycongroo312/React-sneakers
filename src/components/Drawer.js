@@ -1,70 +1,27 @@
-function Drawer() {
+function Drawer({onClose, items = []}) {
     return(
-        <div style={{ display: "none" }} className="overlay">
+        <div className="overlay">
         <div className="drawer">
           <h2 className="mb-30 d-flex justify-between">
             Корзина
-            <img className="cu-p" src="/img/btn-remove.svg" alt="btn-remove" />
+            <img onClick={onClose} className="cu-p" src="/img/btn-remove.svg" alt="btn-remove" />
           </h2>
 
           <div className="cartItems">
-            <div className="cartItem d-flex align-center p-10 mb-20">
-              <img
-                className="mr-20"
-                width={70}
-                height={70}
-                src="/img/sneaker1.jpg"
-                alt="sneaker1"
-              />
-              <div className="mr-20">
-                <p className="mb-5">Мужские Кроссовки Nike Air Max 270</p>
-                <b>12 999 руб.</b>
-              </div>
-              <img
-                className="removeBtn"
-                src="/img/btn-remove.svg"
-                alt="btn-remove"
-              />
-            </div>
+            {items.map((obj) => (
+              <div className="cartItem d-flex align-center p-10 mb-20">
+              <div
+              style={{backgroundImage: `url(${obj.imageUrl})`}}
+                className="cartItemImg"></div>
 
-            <div className="cartItem d-flex align-center p-10 mb-20">
-              <img
-                className="mr-20"
-                width={70}
-                height={70}
-                src="/img/sneaker1.jpg"
-                alt="sneaker1"
-              />
               <div className="mr-20">
-                <p className="mb-5">Мужские Кроссовки Nike Air Max 270</p>
-                <b>12 999 руб.</b>
+                <p className="mb-5">{obj.title}</p>
+                <b>{obj.price}</b>
               </div>
-              <img
-                className="removeBtn"
-                src="/img/btn-remove.svg"
-                alt="btn-remove"
-              />
+              <img className="removeBtn" src="/img/btn-remove.svg" alt="btn-remove"/>
             </div>
-
-            <div className="cartItem d-flex align-center p-10 mb-20">
-              <img
-                className="mr-20"
-                width={70}
-                height={70}
-                src="/img/sneaker1.jpg"
-                alt="sneaker1"
-              />
-              <div className="mr-20">
-                <p className="mb-5">Мужские Кроссовки Nike Air Max 270</p>
-                <b>12 999 руб.</b>
-              </div>
-              <img
-                className="removeBtn"
-                src="/img/btn-remove.svg"
-                alt="btn-remove"
-              />
-            </div>
-          </div>
+            ))}
+          </div>  
 
           <div className="cartTotalBlock">
             <ul>
